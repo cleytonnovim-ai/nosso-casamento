@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#eaf2f7">
+  <title>Contagem Regressiva | Cleyton & Raysse</title>
+  <style>
+    :root {
+      --blue: #173e5e;
+      --blue-soft: #dce8ef;
+      --gold: #b18a4a;
+      --cream: #fffdf8;
+      --ink: #193b57;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px 14px;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(ellipse at 0% 0%, rgba(180, 208, 227, .55), transparent 32%),
+        radial-gradient(ellipse at 100% 100%, rgba(180, 208, 227, .55), transparent 32%),
+        linear-gradient(135deg, #edf4f7, #fffdf8 48%, #f4f0e8);
+    }
+    .invitation {
+      width: min(100%, 980px);
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      padding: clamp(30px, 6vw, 66px) clamp(16px, 5vw, 54px);
+      border: 1px solid rgba(177, 138, 74, .6);
+      border-radius: 18px;
+      background: rgba(255, 253, 248, .91);
+      box-shadow: 0 18px 55px rgba(23, 62, 94, .12);
+    }
+    .invitation::before, .invitation::after {
+      content: "❧";
+      position: absolute;
+      color: rgba(82, 126, 153, .25);
+      font-size: clamp(90px, 15vw, 170px);
+      line-height: 1;
+      pointer-events: none;
+    }
+    .invitation::before { top: -18px; left: -15px; transform: rotate(-28deg); }
+    .invitation::after { bottom: -28px; right: -14px; transform: rotate(150deg); }
+    .heart { color: var(--gold); font-size: 35px; letter-spacing: 8px; }
+    .eyebrow, .tagline, .section-label {
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: .28em;
+      font-weight: 400;
+    }
+    .eyebrow { margin: 16px 0 20px; font-size: clamp(12px, 2vw, 17px); }
+    h1 {
+      margin: 0;
+      color: var(--blue);
+      font-size: clamp(42px, 9vw, 92px);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.12;
+    }
+    h1 span { color: var(--gold); font-style: normal; }
+    .tagline { margin: 20px 0 34px; font-size: clamp(10px, 1.8vw, 14px); }
+    .rule {
+      display: flex; align-items: center; justify-content: center; gap: 16px;
+      color: var(--gold); margin: 24px auto;
+      font-family: Arial, sans-serif; font-size: 12px;
+      letter-spacing: .22em; text-transform: uppercase;
+    }
+    .rule::before, .rule::after { content: ""; height: 1px; width: min(15vw, 110px); background: var(--gold); }
+    .date { font-family: Arial, sans-serif; letter-spacing: .2em; font-size: clamp(16px, 3vw, 25px); margin: 0 0 30px; }
+    .section-label { margin: 0 0 22px; font-size: clamp(11px, 2vw, 15px); }
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(7px, 2vw, 16px);
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .unit {
+      padding: clamp(13px, 3vw, 25px) 5px;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #e6eff4, #d7e5ed);
+      border: 1px solid rgba(255,255,255,.8);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.8);
+    }
+    .number {
+      display: block;
+      color: var(--blue);
+      font-size: clamp(31px, 6.7vw, 66px);
+      line-height: 1.1;
+      font-variant-numeric: tabular-nums;
+    }
+    .label {
+      display: block;
+      margin-top: 10px;
+      font-family: Arial, sans-serif;
+      font-size: clamp(9px, 1.7vw, 13px);
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    .message {
+      margin: 32px auto 0;
+      max-width: 600px;
+      color: var(--blue);
+      font-size: clamp(20px, 3.5vw, 31px);
+      font-style: italic;
+      line-height: 1.4;
+    }
+    .footer-heart { margin-top: 18px; color: var(--gold); font-size: 25px; }
+    .arrived { font-size: clamp(20px, 3vw, 28px); color: var(--blue); }
+    @media (max-width: 460px) {
+      .countdown { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .invitation { border-radius: 12px; }
+      .tagline { margin-bottom: 26px; }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .unit { animation: rise .65s ease both; }
+      .unit:nth-child(2) { animation-delay: .08s; }
+      .unit:nth-child(3) { animation-delay: .16s; }
+      .unit:nth-child(4) { animation-delay: .24s; }
+      @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    }
+  </style>
+</head>
+<body>
+  <main class="invitation">
+    <div class="heart" aria-hidden="true">♡ ♡</div>
+    <p class="eyebrow">Nosso grande dia</p>
+    <h1>Cleyton <span>&amp;</span> Raysse</h1>
+    <p class="tagline">Juntos para sempre</p>
+    <div class="rule">Com amor, contamos os dias</div>
+    <p class="date">24 DE JULHO DE 2027</p>
+    <p class="section-label">Contagem regressiva</p>
+
+    <section class="countdown" id="countdown" aria-label="Tempo restante até o casamento">
+      <div class="unit"><span class="number" id="days">---</span><span class="label">Dias</span></div>
+      <div class="unit"><span class="number" id="hours">--</span><span class="label">Horas</span></div>
+      <div class="unit"><span class="number" id="minutes">--</span><span class="label">Minutos</span></div>
+      <div class="unit"><span class="number" id="seconds">--</span><span class="label">Segundos</span></div>
+    </section>
+
+    <p class="message" id="message">Cada segundo nos aproxima do nosso para sempre!</p>
+    <div class="footer-heart" aria-hidden="true">♡</div>
+  </main>
+
+  <script>
+    // Data do casamento: 24 de julho de 2027, às 00:00, no horário local do dispositivo.
+    const targetDate = new Date(2027, 6, 24, 0, 0, 0);
+
+    const fields = {
+      days: document.getElementById('days'),
+      hours: document.getElementById('hours'),
+      minutes: document.getElementById('minutes'),
+      seconds: document.getElementById('seconds')
+    };
+    const message = document.getElementById('message');
+    let timer;
+
+    function updateCountdown() {
+      const diff = targetDate.getTime() - Date.now();
+
+      if (diff <= 0) {
+        Object.values(fields).forEach(field => field.textContent = '00');
+        message.textContent = 'Chegou o nosso grande dia! Cleyton & Raysse, para sempre! ♥';
+        message.classList.add('arrived');
+        if (timer) clearInterval(timer);
+        return;
+      }
+
+      const totalSeconds = Math.floor(diff / 1000);
+      fields.days.textContent = Math.floor(totalSeconds / 86400).toLocaleString('pt-BR');
+      fields.hours.textContent = String(Math.floor((totalSeconds % 86400) / 3600)).padStart(2, '0');
+      fields.minutes.textContent = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+      fields.seconds.textContent = String(totalSeconds % 60).padStart(2, '0');
+    }
+
+    updateCountdown();
+    timer = setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
